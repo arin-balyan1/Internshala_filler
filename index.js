@@ -1,8 +1,56 @@
+
+import express from 'express';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+import { User_Model, Submitted_forms_Model, Internshala_user_Model } from './data_base.js';
 
+
+const JWT_SECRET='ajldkldlkdshdhfh2342fddssxcbnb';
+await mongoose.connect("mongodb+srv://arinbalyan:ldZsIikKx3mlwSRf@cluster0.cksskgm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/Internshala_filler_database");
+const app=express();
+app.use(express.json())
 puppeteer.use(StealthPlugin());
 let submission_detail=[];
+app.post('/signup', async function (req,res){
+ const email=req.body.email;
+ const password=req.body.password;
+ const username=req.body.username;
+ await User_Model.create({
+    email:email,
+    password:password,
+    username:username
+ })
+ res.json({
+  message:"successfull"
+ })
+})
+
+app.post('/signin', async function (req, res) {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User_Model.findOne({ email, password });
+
+        if (user) {
+            const token = jwt.sign({ id: user._id.toString() }, JWT_SECRET);
+            res.json({ token });
+        } else {
+            res.status(401).json({ message: "Invalid credentials" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+app.listen(3000, () => {
+    console.log("Connected to port 3000");
+});
+
+app.post('/internship',function(req,res){
+
 (async () => {
     const browser = await puppeteer.launch({
         headless: false,
@@ -116,3 +164,4 @@ console.log(submission_detail);
 
 
 })();
+})
