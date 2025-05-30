@@ -21,12 +21,11 @@ const internshalaUserSchema = new Schema({
     userId: Types.ObjectId
 });
 
-// ✅ Make sure this name matches exactly
 const User_Model = mongoose.model('users', userSchema);
 const Submitted_forms_Model = mongoose.model('Submitted_forms', submittedFormsSchema);
 const Internshala_user_Model = mongoose.model('internshalla_user', internshalaUserSchema);
 
-// ✅ Export the correct names here
+
 export {
     User_Model,
     Submitted_forms_Model,
