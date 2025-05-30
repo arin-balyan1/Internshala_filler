@@ -54,14 +54,12 @@ await mongoose.connect("mongodb+srv://arinbalyan:ldZsIikKx3mlwSRf@cluster0.ckssk
 // app.post('/internship',function(req,res){
 const uploadResume = async (page, resumePath) => {
     try {
-        // Check if resume file exists
         if (!fs.existsSync(resumePath)) {
             throw new Error(`Resume file not found: ${resumePath}`);
         }
 
-        console.log(`📄 Attempting to upload resume: ${resumePath}`);
+        console.log(`Attempting to upload resume: ${resumePath}`);
 
-        // Common selectors for file inputs in Internshala
         const possibleSelectors = [
             'input[type="file"]',
             '#custom_resume',
@@ -93,14 +91,14 @@ const uploadResume = async (page, resumePath) => {
             await new Promise(res => setTimeout(res, 3000));
             
         } else {
-            console.warn('⚠️ No file input found - resume upload may not be required for this internship');
+            console.warn('No file input found - resume upload may not be required for this internship');
             return false;
         }
 
         return true;
 
     } catch (error) {
-        console.error('❌ Resume upload failed:', error.message);
+        console.error('Resume upload failed:', error.message);
         await page.screenshot({ path: `resume-upload-error-${Date.now()}.png` });
         return false;
     }
@@ -123,38 +121,32 @@ const submit= async(page)=>{
                 const submitButton = await page.$(selector);
                 
                 if (submitButton) {
-                    // Scroll into view and click
                     await submitButton.evaluate(btn => btn.scrollIntoView());
                     await new Promise(res => setTimeout(res, 1000));
                     await submitButton.click();
-                    console.log(`✅ Submitted application using selector: ${selector}`);
+                    console.log(`Submitted application using selector: ${selector}`);
                     submitted = true;
                     break;
                 }
             } catch (e) {
-                // Continue to next selector
             }
         }
 }
-// Function to click the "Apply now" button
 const clickApplyNowButton = async (page) => {
     try {
         console.log('Attempting to click "Apply now" button...');
         
-        // Wait for the button to be present and visible
+        
         await page.waitForSelector('#easy_apply_button', { visible: true, timeout: 10000 });
         
-        // Scroll the button into view (if needed)
         await page.evaluate(() => {
             const button = document.getElementById('easy_apply_button');
             if (button) button.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
         
-        // Click the button
         await page.click('#easy_apply_button');
         console.log('Successfully clicked "Apply now" button');
         
-        // Wait for any resulting actions (like a modal opening)
         await new Promise(res => setTimeout(res, 3000));
         
         return true;
@@ -167,12 +159,12 @@ const clickApplyNowButton = async (page) => {
 
 const fillAdditionalQuestions = async (page) => {
     try {
-        console.log('📝 Checking for additional questions...');
+        console.log('Checking for additional questions...');
         
-        // Wait a bit for any additional form elements to load
+
         await new Promise(res => setTimeout(res, 2000));
         
-        // Handle text areas (cover letter, why interested, etc.)
+        
         const textAreas = await page.$$('textarea');
         for (let i = 0; i < textAreas.length; i++) {
             try {
@@ -184,7 +176,6 @@ const fillAdditionalQuestions = async (page) => {
                 
                 console.log(`Found textarea with label: "${label}" and placeholder: "${placeholder}"`);
                 
-                // Fill based on common question types
                 if (placeholder.toLowerCase().includes('cover') || label.toLowerCase().includes('cover')) {
                     await textAreas[i].type('I am excited about this internship opportunity as it aligns perfectly with my technical skills and career goals. With my experience in full-stack development using MERN stack and strong problem-solving abilities, I am confident I can contribute effectively to your team.');
                     console.log('Filled cover letter');
@@ -195,7 +186,7 @@ const fillAdditionalQuestions = async (page) => {
                     await textAreas[i].type('I have experience in full-stack web development with MERN stack, competitive programming, and have completed various projects including web applications and algorithmic solutions.');
                     console.log('Filled experience question');
                 } else {
-                    // Generic response for other text areas
+                
                     await textAreas[i].type('I am a dedicated Computer Science student with strong technical skills and passion for software development. I am eager to contribute and learn in a professional environment.');
                     console.log(' Filled generic question');
                 }
@@ -206,7 +197,7 @@ const fillAdditionalQuestions = async (page) => {
             }
         }
         
-        // Handle any additional radio buttons or checkboxes
+        
         const radioButtons = await page.$$('input[type="radio"]');
         for (let radio of radioButtons) {
             try {
@@ -297,7 +288,7 @@ const internshipData = await page.evaluate(() => {
             return !isHidden && hasId;
         })
         .map(el => {
-            // Corrected selector - using job-title-href instead of job-title-herf
+            
             const linkElement = el.querySelector('a.job-title-href');
             return {
                 id: el.id,
