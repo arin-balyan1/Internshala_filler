@@ -142,14 +142,9 @@ const fillAdditionalQuestions = async (page,company,title) => {
                     await page.click(coverLetterHolderSelector); // Click the visible holder
                      const dynamicPrompt = `Write a professional cover letter for the company ${company}. The title of the job is ${title}.Ensure the letter highlights relevant skills and expresses enthusiasm for this specific role.`;
                    const coverLetter = await generate(dynamicPrompt);
-                    // Clear existing content if any (important for rich text editors)
-                    // await page.evaluate(selector => {
-                    //     const el = document.querySelector(selector);
-                    //     if (el) el.innerHTML = ''; // Clear content of the div
-                    // }, coverLetterHolderSelector);
+            
                     await page.type(coverLetterHolderSelector, coverLetter, { delay: 10 });
-                //    await textAreas[i].click();
-                //     await textAreas[i].type(coverLetter);
+                
                     console.log('Filled cover letter');
                 }
                 catch(err){
