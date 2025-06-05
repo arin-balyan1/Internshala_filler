@@ -1,57 +1,21 @@
 
-import express from 'express';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import fs from 'fs';
 import path from 'path';
 import { User_Model, Submitted_forms_Model, Internshala_user_Model } from './data_base.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
+const email = process.env.INTERNSHALA_EMAIL;
+const password = process.env.INTERNSHALA_PASSWORD; 
 
 const JWT_SECRET='ajldkldlkdshdhfh2342fddssxcbnb';
 await mongoose.connect("mongodb+srv://arinbalyan:ldZsIikKx3mlwSRf@cluster0.cksskgm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/Internshala_filler_database");
-// const app=express();
-// app.use(express.json())
  puppeteer.use(StealthPlugin());
  let submission_detail=[];
-// app.post('/signup', async function (req,res){
-//  const email=req.body.email;
-//  const password=req.body.password;
-//  const username=req.body.username;
-//  await User_Model.create({
-//     email:email,
-//     password:password,
-//     username:username
-//  })
-//  res.json({
-//   message:"successfull"
-//  })
-// })
 
-// app.post('/signin', async function (req, res) {
-//     const { email, password } = req.body;
-
-//     try {
-//         const user = await User_Model.findOne({ email, password });
-
-//         if (user) {
-//             const token = jwt.sign({ id: user._id.toString() }, JWT_SECRET);
-//             res.json({ token });
-//         } else {
-//             res.status(401).json({ message: "Invalid credentials" });
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: "Server error" });
-//     }
-// });
-
-// app.listen(3000, () => {
-//     console.log("Connected to port 3000");
-// });
-
-// app.post('/internship',function(req,res){
 const uploadResume = async (page, resumePath) => {
     try {
         if (!fs.existsSync(resumePath)) {
@@ -243,9 +207,14 @@ const fillAdditionalQuestions = async (page) => {
     await page.click('#login-link-container span');
     await new Promise(res => setTimeout(res, 2000));
 
-    await page.type('#modal_email', 'arinbalyan2004@gmail.com', { delay: 96 });
-    await new Promise(res => setTimeout(res, 1512));
-    await page.type('#modal_password', 'arinisgreat', { delay: 112 });
+    await page.type('#modal_email', email , { delay: 125 });
+    await new Promise(res => setTimeout(res, 1600));
+    await page.type('#modal_password', password, { delay: 180 });
+        await new Promise(res => setTimeout(res, 3000));
+
+    await page.click('#modal_login_submit');
+        await new Promise(res => setTimeout(res, 500));
+
     await page.click('#modal_login_submit');
     await new Promise(res => setTimeout(res, 5067));
 
@@ -266,18 +235,107 @@ const fillAdditionalQuestions = async (page) => {
             console.log('Checkbox unchecked successfully');
             await new Promise(res => setTimeout(res, 3000));
         }
+var arr = [17, 18, 19, 20, 21, 22, 23];
 
-        await page.waitForSelector('#select_category_chosen', { visible: true, timeout: 10000 });
-        await page.click('#select_category_chosen');
-        await page.waitForSelector('.chosen-results .active-result', { visible: true, timeout: 5000 });
-        await new Promise(res => setTimeout(res, 1000));
-        await page.click('li.active-result[data-option-array-index="157"]');
-        await new Promise(res => setTimeout(res, 3000));
-    } catch (error) {
+async function selectCategoryWithRetry(page, indexArray) {
+    for(let i = 0; i < indexArray.length; i++){
+        const currentIndex = indexArray[i];
+        let success = false;
+        let attempts = 0;
+        const maxAttempts = 3;
+        
+        while (!success && attempts < maxAttempts) {
+            attempts++;
+            console.log(`Selecting index ${currentIndex} - Attempt ${attempts}/${maxAttempts}`);
+            
+            try {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                await page.waitForSelector('#select_category_chosen', { visible: true, timeout: 10000 });
+                await page.click('#select_category_chosen');
+                
+                await page.waitForSelector('.chosen-drop', { visible: true, timeout: 10000 });
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                const selector = `li.active-result[data-option-array-index="${currentIndex}"]`;
+                
+                const elementExists = await page.evaluate((sel) => {
+                    return document.querySelector(sel) !== null;
+                }, selector);
+                
+                if (!elementExists) {
+                    console.log(`Element with selector ${selector} not found`);
+                    throw new Error(`Element not found: ${selector}`);
+                }
+                
+                await page.evaluate((sel) => {
+                    const element = document.querySelector(sel);
+                    if (element) {
+                        element.scrollIntoView({ block: 'center' });
+                        element.click();
+                        return true;
+                    }
+                    return false;
+                }, selector);
+                
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                await page.evaluate(() => {
+                    const dropdown = document.querySelector('.chosen-drop');
+                    if (dropdown) {
+                        dropdown.style.display = 'none';
+                    }
+                });
+                
+                success = true;
+                console.log(`Successfully selected index ${currentIndex}`);
+                
+            } catch (error) {
+                console.error(`Attempt ${attempts} failed for index ${currentIndex}:`, error.message);
+                
+                try {
+                    await page.evaluate(() => {
+                        const dropdown = document.querySelector('.chosen-drop');
+                        if (dropdown) {
+                            dropdown.style.display = 'none';
+                        }
+                        document.body.click();
+                    });
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                } catch (e) {
+                    console.error('Recovery failed:', e.message);
+                }
+                
+                if (attempts === maxAttempts) {
+                    console.error(`Failed to select index ${currentIndex} after ${maxAttempts} attempts`);
+                }
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+        }
+    }
+}
+
+await selectCategoryWithRetry(page, arr);
+
+            } catch (error) {
+                console.error(`Attempt ${attempts} failed for index ${currentIndex}:`, error.message);
+                if (attempts === maxAttempts) {
+                    console.error(`Failed to select index ${currentIndex} after ${maxAttempts} attempts`);
+                }
+                await delay(2000);
+            }
+        }
+    }
+}
+await selectCategoryWithRetry(page, [17, 18, 19, 20, 21, 22, 23]);
+
+}
+     catch (error) {
         console.error('Error occurred:', error);
         await page.screenshot({ path: 'error-screenshot.png' });
     }
 
+    await new Promise(res => setTimeout(res, 5000));
 
 const internshipData = await page.evaluate(() => {
     const elements = Array.from(document.querySelectorAll('.individual_internship'));
@@ -338,7 +396,7 @@ for (let i = 0; i < no_of_submission; i++) {
   }
 } catch (error) {
   console.error(" Error clicking 'Proceed to application':", error.message);
-  await page.screenshot({ path: `proceed-btn-error-${Date.now()}.png` });
+ // await page.screenshot({ path: `proceed-btn-error-${Date.now()}.png` });
 }
 
 
@@ -363,7 +421,9 @@ for (let i = 0; i < no_of_submission; i++) {
     await page.waitForSelector('.individual_internship', { timeout: 5000 }).catch(() => {});
 }
 console.log(submission_detail);
-
+new Promise(res=>{
+    setTimeout(res,2000);
+})
+browser.close();
 
 })();
-//})

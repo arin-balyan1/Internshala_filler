@@ -1,0 +1,160 @@
+0: .NET Development
+1: 3D Printing
+2: ASP.NET Development
+3: Accounts
+4: Acting
+5: Aerospace Engineering
+6: Agriculture & Food Engineering
+7: Analytics
+8: Anchoring
+9: Android App Development
+10: Angular.js Development
+11: Animation
+12: Architecture
+13: Artificial Intelligence (AI)
+14: Audio Making/Editing
+15: Auditing
+16: Automobile Engineering
+17: Backend Development
+18: Bank
+19: Big Data
+20: Bioinformatics
+21: Biology
+22: Biotechnology Engineering
+23: Blockchain Development
+24: Blogging
+25: Brand Management
+26: Business Development
+27: Business/MBA
+28: CA Articleship
+29: CAD Design
+30: CMA Articleship
+31: CS Articleship
+32: Campus Ambassador
+33: Chartered Accountancy (CA)
+34: Chemical Engineering
+35: Chemistry
+36: Cinematography
+37: Civil Engineering
+38: Client Servicing
+39: Cloud Computing
+40: Commerce
+41: Company Secretary (CS)
+42: Computer Science
+43: Computer Vision
+44: Content Writing
+45: Copywriting
+46: Creative Design
+47: Creative Writing
+48: Culinary Arts
+49: Customer Service
+50: Cyber Security
+51: Data Entry
+52: Data Science
+53: Database Building
+54: Design
+55: Dietetics/Nutrition
+56: Digital Marketing
+57: E-commerce
+58: Editorial
+59: Electric Vehicle
+60: Electrical Engineering
+61: Electronics Engineering
+62: Embedded Systems
+63: Energy Science & Engineering
+64: Engineering
+65: Engineering Design
+66: Environmental Sciences
+67: Event Management
+68: Facebook Marketing
+69: Fashion Design
+70: Film Making
+71: Finance
+72: Flutter Development
+73: Front End Development
+74: Full Stack Development
+75: Fundraising
+76: Game Design
+77: Game Development
+78: General Management
+79: Government
+80: Graphic Design
+81: Hospitality
+82: Hotel Management
+83: Human Resources (HR)
+84: Humanities
+85: Image Processing
+86: Industrial & Production Engineering
+87: Industrial Design
+88: Information Technology
+89: Instrumentation & Control Engineering
+90: Interior Design
+91: International
+92: Internet of Things (IoT)
+93: Java Development
+94: Javascript Development
+95: Journalism
+96: Law
+97: Legal Research
+98: Machine Learning
+99: Manufacturing Engineering
+100: Market/Business Research
+101: Marketing
+102: Material Science
+103: Mathematics
+104: Mathematics & Computing
+105: Mechanical Engineering
+106: Mechatronics
+107: Media
+108: Medicine
+109: Merchandise Design
+110: Mobile App Development
+111: Motion Graphics
+112: Music
+113: NGO
+114: Network Engineering
+115: Node.js Development
+116: Operations
+117: PHP Development
+118: Petroleum Engineering
+119: Pharmaceutical
+120: Photography
+121: Physics
+122: Political/Economics/Policy Research
+123: Product Management
+124: Programming
+125: Project Management
+126: Proofreading
+127: Psychology
+128: Public Relations (PR)
+129: Python/Django Development
+130: Quality Analyst
+131: Recruitment
+132: Robotics
+133: Ruby on Rails
+134: Sales
+135: Science
+136: Search Engine Optimization (SEO)
+137: Social Media Marketing
+138: Social Work
+139: Software Development
+140: Software Testing
+141: Sports
+142: Statistics
+143: Stock/Market Trading
+144: Strategy
+145: Subject Matter Expert (SME)
+146: Supply Chain Management (SCM)
+147: Talent Acquisition
+148: Teaching
+149: Telecalling
+150: Transcription
+151: Translation
+152: Travel & Tourism
+153: UI/UX Design
+154: Video Making/Editing
+155: Videography
+156: Volunteering
+157: Web Development
+158: Wordpress Development
+159: iOS App Development
