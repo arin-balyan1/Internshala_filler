@@ -136,22 +136,27 @@ const fillAdditionalQuestions = async (page,company,title) => {
                 
                 console.log(`Found textarea with label: "${label}" and placeholder: "${placeholder}"`);
                 
-                if (placeholder.toLowerCase().includes('cover') || label.toLowerCase().includes('cover')) {
-                   const dynamicPrompt = `Write a professional cover letter for the company ${company}. The title of the job is ${title}.Ensure the letter highlights relevant skills and expresses enthusiasm for this specific role.`;
-                   const coverLetter = await generate(dynamicPrompt);
+                try {
                    const coverLetterHolderSelector = '#cover_letter_holder';
                     await page.waitForSelector(coverLetterHolderSelector, { visible: true, timeout: 5000 });
                     await page.click(coverLetterHolderSelector); // Click the visible holder
+                     const dynamicPrompt = `Write a professional cover letter for the company ${company}. The title of the job is ${title}.Ensure the letter highlights relevant skills and expresses enthusiasm for this specific role.`;
+                   const coverLetter = await generate(dynamicPrompt);
                     // Clear existing content if any (important for rich text editors)
-                    await page.evaluate(selector => {
-                        const el = document.querySelector(selector);
-                        if (el) el.innerHTML = ''; // Clear content of the div
-                    }, coverLetterHolderSelector);
+                    // await page.evaluate(selector => {
+                    //     const el = document.querySelector(selector);
+                    //     if (el) el.innerHTML = ''; // Clear content of the div
+                    // }, coverLetterHolderSelector);
                     await page.type(coverLetterHolderSelector, coverLetter, { delay: 10 });
                 //    await textAreas[i].click();
                 //     await textAreas[i].type(coverLetter);
                     console.log('Filled cover letter');
-                } else if (placeholder.toLowerCase().includes('why') || label.toLowerCase().includes('why')) {
+                }
+                catch(err){
+                    console.log(err);
+                }
+
+                  if (placeholder.toLowerCase().includes('why') || label.toLowerCase().includes('why')) {
             const dynamicPrompt = `As a candidate, answer the question: "Why should we hire you for our company ${company} for the role of ${title}?" Highlight your fit based on the resume.`;
              const hire_me=await generate(dynamicPrompt);
              await textAreas[i].click();

@@ -38,7 +38,8 @@ export const generate = async (initialPrompt) => {
         const finalPrompt = initialPrompt + `
 dont use * to highlight the project name or any name like college name or anything.
 No greeting just straight to answer.
-If the code is asked just write the code dont use ' or "
+If the code is asked just write the code dont use ' or " or dont write comments inside the code
+The response should be under 2000 characters
 ---RESUME_START---
 ${extractedResumeText}
 ---RESUME_END---
