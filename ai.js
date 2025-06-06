@@ -57,6 +57,3 @@ ${extractedResumeText}
         return null; 
     }
 };
-
-
-// generate(); // <--- REMOVE THIS LINE if you are calling it from index2.js
