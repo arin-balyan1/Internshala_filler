@@ -23,7 +23,7 @@ async function getPdfText(pdfFilePath) {
 }
 
 export const generate = async (initialPrompt) => {
-    const resumeFilePath = './update_cv.pdf'; 
+    const resumeFilePath = './resume.pdf'; 
 
     let extractedResumeText = '';
 

@@ -8,7 +8,7 @@ import { User_Model, Submitted_forms_Model, Internshala_user_Model } from './dat
 import { generate } from './ai.js';
 
 const JWT_SECRET='ajldkldlkdshdhfh2342fddssxcbnb';
-await mongoose.connect("mongodb+srv://arinbalyan:ldZsIikKx3mlwSRf@cluster0.cksskgm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/Internshala_filler_database");
+//await mongoose.connect("mongodb+srv://arinbalyan:ldZsIikKx3mlwSRf@cluster0.cksskgm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/Internshala_filler_database");
  puppeteer.use(StealthPlugin());
  let submission_detail=[];
 
@@ -218,7 +218,7 @@ const fillAdditionalQuestions = async (page,company,title) => {
 
     const page = await browser.newPage();
     await page.setUserAgent(
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.2478.80'
     );
 
     page.setDefaultNavigationTimeout(30000);
@@ -230,9 +230,9 @@ const fillAdditionalQuestions = async (page,company,title) => {
     await page.click('#login-link-container span');
     await new Promise(res => setTimeout(res, 2000));
 
-    await page.type('#modal_email', 'arinbalyan2004@gmail.com', { delay: 125 });
+    await page.type('#modal_email', process.env.INTERNSHALA_EMAIL, { delay: 125 });
     await new Promise(res => setTimeout(res, 1600));
-    await page.type('#modal_password', 'arinisgreat', { delay: 180 });
+    await page.type('#modal_password', process.env.INTERNSHALA_PASSWORD, { delay: 180 });
         await new Promise(res => setTimeout(res, 3000));
 
     await page.click('#modal_login_submit');
@@ -263,7 +263,7 @@ const fillAdditionalQuestions = async (page,company,title) => {
         await page.click('#select_category_chosen');
         await page.waitForSelector('.chosen-results .active-result', { visible: true, timeout: 5000 });
         await new Promise(res => setTimeout(res, 1000));
-        await page.click('li.active-result[data-option-array-index="161"]');
+        await page.click('li.active-result[data-option-array-index="140"]');
         await new Promise(res => setTimeout(res, 3000));
     } catch (error) {
         console.error('Error occurred:', error);
@@ -294,7 +294,7 @@ const internshipData = await page.evaluate(() => {
 
 console.log('Found internships:', internshipData);
 
-let no_of_submission = Math.min(5, internshipData.length);
+let no_of_submission = Math.min(150, internshipData.length);
 
 for (let i = 0; i < no_of_submission; i++) {
     let urllink = internshipData[i].fullUrl;
@@ -308,30 +308,30 @@ for (let i = 0; i < no_of_submission; i++) {
     console.log('Clicked Apply Now button.');
         await new Promise(res => setTimeout(res, 5000));
 
-  try {
-  await page.waitForSelector('button.btn.btn-large.education_incomplete.proceed-btn', {
-    visible: true,
-    timeout: 10000
-  });
+//   try {
+//   await page.waitForSelector('button.btn.btn-large.education_incomplete.proceed-btn', {
+//     visible: true,
+//     timeout: 10000
+//   });
 
-  const button = await page.$('button.btn.btn-large.education_incomplete.proceed-btn');
+//   const button = await page.$('button.btn.btn-large.education_incomplete.proceed-btn');
 
-  if (button) {
-    const box = await button.boundingBox();
-    if (box) {
- await new Promise(res => setTimeout(res, 500));      
- await button.click();
- console.log(" Clicked 'Proceed to application' button successfully.");
-    } else {
-      console.warn("Button found but not visible/clickable.");
-    }
-  } else {
-    console.warn(" Button not found.");
-  }
-} catch (error) {
-  console.error(" Error clicking 'Proceed to application':", error.message);
-//  await page.screenshot({ path: `proceed-btn-error-${Date.now()}.png` });
-}
+//   if (button) {
+//     const box = await button.boundingBox();
+//     if (box) {
+//  await new Promise(res => setTimeout(res, 500));      
+//  await button.click();
+//  console.log(" Clicked 'Proceed to application' button successfully.");
+//     } else {
+//       console.warn("Button found but not visible/clickable.");
+//     }
+//   } else {
+//     console.warn(" Button not found.");
+//   }
+// } catch (error) {
+//   console.error(" Error clicking 'Proceed to application':", error.message);
+ //  await page.screenshot({ path: `proceed-btn-error-${Date.now()}.png` });
+// }
 
 
  await new Promise((res)=>{setTimeout(res,5000)});
@@ -339,7 +339,7 @@ for (let i = 0; i < no_of_submission; i++) {
                     await page.click('#radio1');
                     console.log(' Selected availability radio button');
 
- await uploadResume(page, './update_cv.pdf');
+ await uploadResume(page, './resume.pdf');
   await fillAdditionalQuestions(page,internshipData[i].company,internshipData[i].title);
   await submit(page);
 
