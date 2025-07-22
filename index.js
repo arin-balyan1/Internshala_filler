@@ -6,7 +6,8 @@ import fs from 'fs';
 import path from 'path';
 import { User_Model, Submitted_forms_Model, Internshala_user_Model } from './data_base.js';
 import { generate } from './ai.js';
-
+import dotenv from 'dotenv'; 
+dotenv.config();
 const JWT_SECRET='ajldkldlkdshdhfh2342fddssxcbnb';
 //await mongoose.connect("mongodb+srv://arinbalyan:ldZsIikKx3mlwSRf@cluster0.cksskgm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/Internshala_filler_database");
  puppeteer.use(StealthPlugin());
